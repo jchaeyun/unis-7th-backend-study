@@ -1,10 +1,12 @@
 package com.example.week6;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor //의존성 주입 위해 필요
@@ -19,4 +21,12 @@ public class CheerMessageController {
         cheerMessageService.create(cheerMessageDTO); //DTO 자체를 넘김
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/cheer/list")
+    public ResponseEntity<Page<CheerMessageDTO>> getList(@RequestParam(defaultValue = "0") int page) {
+        Page<CheerMessageDTO> paging = cheerMessageService.getList(page); //페이징 정보를 담은 DTO 객체를 가져옴
+
+        return ResponseEntity.ok(paging);
+    }
 }
+
